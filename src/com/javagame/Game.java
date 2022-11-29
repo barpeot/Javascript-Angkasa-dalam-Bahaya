@@ -20,6 +20,7 @@ public class Game extends JFrame{
         setLocationRelativeTo(null);
 	}
 	
+	
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {

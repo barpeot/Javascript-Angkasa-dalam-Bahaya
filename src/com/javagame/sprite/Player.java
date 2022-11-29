@@ -22,7 +22,7 @@ public class Player extends Sprite{
         width = ii.getImage().getWidth(null);
         setImage(ii.getImage());
 
-        int START_X = Settings.WINDOW_WIDTH/2 - width;
+        int START_X = Settings.WINDOW_WIDTH/2 - width - 8;
         setX(START_X);
 
         int START_Y = 475;

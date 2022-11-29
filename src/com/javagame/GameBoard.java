@@ -25,23 +25,27 @@ import com.javagame.sprite.Enemy;
 import com.javagame.sprite.Player;
 import com.javagame.sprite.Shot;
 
-public class GameBoard extends JPanel implements Settings, ActionListener{
+public class GameBoard extends JPanel implements Settings{
 
 	private Dimension d;
 	private ArrayList<Enemy> enemies;
 	private Player player;
 	private Shot shot;
 	
-	private int direction = 3;
+	private int direction = 2;
 	private int deaths = 0;
+	private int deathcounter = 0;
 	private int currentEnemyArmyWidth = Settings.ENEMY_ARMY_WIDTH;
 	private int currentEnemyArmyHeight = Settings.ENEMY_ARMY_HEIGHT;
 	private int currentNoOfEnemies = currentEnemyArmyHeight * currentEnemyArmyWidth;
+	private int score = 10 * deaths;
+	private int hiscore = 0;
 	
 	private boolean inGame = true;
 	private String explImg = "src/art/explosion.png";
     private String message = "Game Over";
     private JButton retry = new JButton("Retry?");
+    private JButton nextLevel = new JButton("Next Level");
     
     private Timer timer;
 	
@@ -49,8 +53,26 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
     	initBoard();
     	startGame();
     	this.add(retry);
+    	this.add(nextLevel);
+    	
     	retry.setVisible(false);
-    	retry.addActionListener(this);
+    	retry.addActionListener(new ActionListener() {
+			
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			retry();
+    			repaint();
+    		}
+    });
+    	nextLevel.setVisible(false);
+    	nextLevel.addActionListener(new ActionListener() {
+			
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			nextLevel();
+    			repaint();
+    		}
+    });
     }
 
 	private void initBoard() {
@@ -157,11 +179,16 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
 
             g.drawLine(0, Settings.GROUND,
                     Settings.WINDOW_WIDTH, Settings.GROUND);
+            
+            g.setColor(Color.white);
+            g.drawString("Score : " + score, 20, 30);
+            g.drawString("Hi-Score : " + hiscore, 20, 50);
 
             drawAliens(g);
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
+            
 
         } else {
 
@@ -192,8 +219,10 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
         g.setFont(small);
         g.drawString(message, (Settings.WINDOW_WIDTH - fontMetrics.stringWidth(message)) / 2, Settings.WINDOW_HEIGHT / 2 + 100);
         
-        retry.setBounds(Settings.WINDOW_WIDTH/2 - 75, 500, 150, 50);
+        retry.setBounds(Settings.WINDOW_WIDTH/2 - 75, 450, 150, 30);
+        nextLevel.setBounds(Settings.WINDOW_WIDTH/2 - 75, 500, 150, 30);
         retry.setVisible(true);
+        
 	}
 
 	private void update() {
@@ -204,8 +233,11 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
             timer.stop();
             message = "Game won!";
             retry.setVisible(true);
+            nextLevel.setVisible(true);
             
         }
+        
+        score = 10 * deathcounter;
 
         // player
         player.act();
@@ -231,13 +263,14 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
                         e.setImage(ii.getImage());
                         e.setDying(true);
                         deaths++;
+                        deathcounter++;
                         shot.die();
                     }
                 }
             }
 
             int y = shot.getY();
-            y -= 8;
+            y -= 12;
 
             if (y < 0) {
                 shot.die();
@@ -252,9 +285,9 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
 
             int x = e.getX();
 
-            if (x >= Settings.WINDOW_WIDTH - Settings.BORDER_RIGHT && direction != -3) {
+            if (x >= Settings.WINDOW_WIDTH - Settings.BORDER_RIGHT && direction != -2) {
 
-                direction = -3;
+                direction = -2;
 
                 Iterator<Enemy> i1 = enemies.iterator();
 
@@ -265,9 +298,9 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
                 }
             }
 
-            if (x <= Settings.BORDER_LEFT && direction != 3) {
+            if (x <= Settings.BORDER_LEFT && direction != 2) {
 
-                direction = 3;
+                direction = 2;
 
                 Iterator<Enemy> i2 = enemies.iterator();
 
@@ -383,23 +416,34 @@ public class GameBoard extends JPanel implements Settings, ActionListener{
         }
     }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		this.retry();
-		repaint();
-	}
-
-	private void retry() {
+	private void nextLevel() {
 		this.inGame = true;
-		this.currentEnemyArmyWidth = Settings.ENEMY_ARMY_WIDTH;
-		this.currentEnemyArmyHeight = Settings.ENEMY_ARMY_HEIGHT;
+		this.currentEnemyArmyWidth += 1;
 		this.currentNoOfEnemies = currentEnemyArmyWidth * currentEnemyArmyHeight;
-		this.direction = 3;
+		this.direction = 2;
 	    this.deaths = 0;
 	    this.message = "Game Over";
 		this.initBoard();
 		this.startGame();
 		retry.setVisible(false);
+		nextLevel.setVisible(false);
+		repaint();
+	}
+    
+    private void retry() {
+		this.inGame = true;
+		this.currentEnemyArmyWidth = Settings.ENEMY_ARMY_WIDTH;
+		this.currentEnemyArmyHeight = Settings.ENEMY_ARMY_HEIGHT;
+		this.currentNoOfEnemies = currentEnemyArmyWidth * currentEnemyArmyHeight;
+		this.direction = 2;
+		this.deathcounter = 0;
+	    this.deaths = 0;
+	    this.message = "Game Over";
+	    if(score > hiscore)hiscore = score;
+		this.initBoard();
+		this.startGame();
+		retry.setVisible(false);
+		nextLevel.setVisible(false);
 		repaint();
 	}
 }
