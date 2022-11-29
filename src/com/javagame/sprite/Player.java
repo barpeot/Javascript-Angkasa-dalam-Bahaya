@@ -1,6 +1,12 @@
 package com.javagame.sprite;
 
-public class Player extends Sprite {
+import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+
+import com.javagame.Settings;
+
+public class Player extends Sprite{
   
   private int width;
 
@@ -8,19 +14,67 @@ public class Player extends Sprite {
 
         initPlayer();
     }
-  
-  public void keyPressed(KeyEvent e) {
+
+    private void initPlayer() {
+    	var playerImg = "src/art/player.png";
+        var ii = new ImageIcon(playerImg);
+
+        width = ii.getImage().getWidth(null);
+        setImage(ii.getImage());
+
+        int START_X = Settings.WINDOW_WIDTH/2 - width;
+        setX(START_X);
+
+        int START_Y = 475;
+        setY(START_Y);
+		
+	}
+
+    public void act() {
+
+        x += dx;
+
+        if (x <= 6) {
+
+            x = 6;
+        }
+
+        if (x >= Settings.WINDOW_WIDTH - (2 * width - Settings.BORDER_RIGHT/2)) {
+
+            x = Settings.WINDOW_WIDTH - (2 * width - Settings.BORDER_RIGHT/2);
+        }
+    }
+
+	public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = -2;
+            dx = -6;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
 
-            dx = 2;
+            dx = 6;
         }
     }
+
+
+
+	public void keyReleased(KeyEvent e) {
+		
+		int key = e.getKeyCode();
+		
+		if (key == KeyEvent.VK_LEFT) {
+
+            dx = 0;
+        }
+
+		if (key == KeyEvent.VK_RIGHT) {
+
+            dx = 0;
+        }
+		
+	}
 }

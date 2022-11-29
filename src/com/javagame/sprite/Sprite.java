@@ -2,7 +2,11 @@ package com.javagame.sprite;
 
 import java.awt.Image;
 
-public class Sprite {
+import javax.swing.JPanel;
+
+import com.javagame.Settings;
+
+public class Sprite extends JPanel implements Settings{
 
 	private boolean visible;
 	private Image image;
@@ -20,7 +24,7 @@ public class Sprite {
 		visible = false;
 	}
 	
-	public boolean getVisible() {
+	public boolean isVisible() {
 		return visible;
 	}
 	
