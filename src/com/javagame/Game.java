@@ -12,7 +12,7 @@ public class Game extends JFrame{
 	public void InitUI() {
 		add(new GameBoard());
 		
-		setTitle("Angkasa dalam Bahaya 0.1");
+		setTitle("Angkasa dalam Bahaya");
 		setSize(Settings.WINDOW_WIDTH, Settings.WINDOW_HEIGHT);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

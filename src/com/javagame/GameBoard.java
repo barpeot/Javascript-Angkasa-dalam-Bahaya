@@ -231,7 +231,7 @@ public class GameBoard extends JPanel implements Settings{
 
             inGame = false;
             timer.stop();
-            message = "Game won!";
+            message = "Level Complete!";
             retry.setVisible(true);
             nextLevel.setVisible(true);
             
@@ -239,10 +239,8 @@ public class GameBoard extends JPanel implements Settings{
         
         score = 10 * deathcounter;
 
-        // player
         player.act();
 
-        // shot
         if (shot.isVisible()) {
 
             int shotX = shot.getX();
@@ -279,7 +277,6 @@ public class GameBoard extends JPanel implements Settings{
             }
         }
 
-        // aliens
 
         for (Enemy e : enemies) {
 
@@ -332,7 +329,6 @@ public class GameBoard extends JPanel implements Settings{
             }
         }
 
-        // bombs
         var generator = new Random();
 
         for (Enemy e : enemies) {

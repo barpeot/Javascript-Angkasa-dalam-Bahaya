@@ -14,11 +14,11 @@ public interface Settings {
 	int ENEMY_INIT_Y = 5;
 	int LEVEL = 1;
 	int NOOFTARGET = ENEMY_ARMY_WIDTH * ENEMY_ARMY_HEIGHT;
-	int BORDER_RIGHT = 6;
+	int BORDER_RIGHT = 32;
 	int BORDER_LEFT = 6;
 	int GO_DOWN = 60;
-	int ENEMY_HEIGHT = 22;
-	int ENEMY_WIDTH = 32;
+	int ENEMY_HEIGHT = 16;
+	int ENEMY_WIDTH = 16;
 	int CHANCE = 5;
 	int PLAYER_WIDTH = 16;
 	int PLAYER_HEIGHT = 16;
